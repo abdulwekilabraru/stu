@@ -5,11 +5,13 @@ import path from "path";
 
 // Ensure logs directory exists
 const logsDir = path.resolve("./logs");
-if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir, { recursive: true });
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 // Winston logger configuration
 const logger = winston.createLogger({
-  level: "info",
+  level: "info", // log level
   format: winston.format.combine(
     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     winston.format.printf(
@@ -17,7 +19,7 @@ const logger = winston.createLogger({
     )
   ),
   transports: [
-    new winston.transports.Console(),
+    new winston.transports.Console(), // Log to console
     new winston.transports.File({ filename: path.join(logsDir, "error.log"), level: "error" }),
     new winston.transports.File({ filename: path.join(logsDir, "combined.log") }),
   ],

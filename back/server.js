@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import { logger, morganMiddleware } from "./utils/logger.js";
+import authRoutes from "./routes/authRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -19,6 +21,13 @@ app.get("/", (req, res) => {
   logger.info("Received request to root / endpoint");
   res.send("API is running...");
 });
+
+// Mount routes
+app.use("/api/auth", authRoutes);
+
+// Error handling middleware
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => logger.info(`✅ Server running on port ${PORT}`));
