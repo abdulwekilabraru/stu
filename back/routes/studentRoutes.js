@@ -8,7 +8,7 @@ const router = express.Router();
 // Public read could be allowed; here we protect all student routes
 router.use(protect);
 
-router.get("/", getStudents);
+router.route("/").get(protect, getStudents);
 router.post("/", adminOnly, createStudent); // only admin can create
 router.delete("/:id", adminOnly, deleteStudent); // only admin can delete
 

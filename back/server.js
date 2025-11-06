@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import { logger, morganMiddleware } from "./utils/logger.js";
 import authRoutes from "./routes/authRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 // Mount routes
 app.use("/api/auth", authRoutes);
+app.use("/api/students", studentRoutes);
 
 // Error handling middleware
 app.use(notFound);
