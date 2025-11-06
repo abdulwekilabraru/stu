@@ -1,6 +1,5 @@
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
-import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 
 // @desc   Register a new user (admin/student)
@@ -9,7 +8,7 @@ import { generateToken } from "../utils/generateToken.js";
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  if (!name || !email || !password || !role) {
+  if (!name || !email || !password) {
     res.status(400);
     throw new Error("Please provide all required fields");
   }
@@ -20,13 +19,11 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
-    role,
+    password, // The password will be hashed by the pre-save hook in the model
+    role: role || "student", // Default to 'student' if no role is provided
   });
 
   if (user) {
@@ -50,7 +47,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
+  if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,

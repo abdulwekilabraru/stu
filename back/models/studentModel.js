@@ -4,10 +4,8 @@ const studentSchema = new mongoose.Schema(
   {
     studentId: {
       type: String,
-      required: [true, "Student ID is required"],
+      required: true,
       unique: true,
-      trim: true,
-      uppercase: true,
     },
     firstName: {
       type: String,
@@ -22,7 +20,6 @@ const studentSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
       trim: true,
       lowercase: true,
       match: [
@@ -69,7 +66,6 @@ studentSchema.virtual("fullName").get(function () {
 });
 
 // Indexing for faster queries
-studentSchema.index({ studentId: 1 });
 studentSchema.index({ email: 1 });
 studentSchema.index({ course: 1, year: 1 });
 studentSchema.index({ firstName: "text", lastName: "text" });
