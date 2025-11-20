@@ -1,12 +1,25 @@
-import "./App.css";
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ManageStudents from './pages/ManageStudents';
+import RegisterStudent from './pages/RegisterStudent';
+import Profile from './pages/Profile';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <h1 className="text-3xl font-bold text-white underline">
-        Hello Vite + React + Tailwind!
-      </h1>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manage-students" element={<ManageStudents />} />
+        <Route path="/register-student" element={<RegisterStudent />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+    </Routes>
   );
 }
 
