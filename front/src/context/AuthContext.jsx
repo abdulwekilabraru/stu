@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         // A real app would fetch user profile from backend
         setUser({ id: decoded.id, role: 'admin' }); // Mock user
       } catch (error) {
-        console.error("Invalid token");
+        console.error("Invalid token", error);
         localStorage.removeItem('token');
       }
     }
